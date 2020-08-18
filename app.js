@@ -6,6 +6,7 @@ var finalList = document.getElementById('ul');
 var productArray = [];
 var totalClicks = 0;
 var maxClicks = 25;
+var uniqueArray = [];
 
 
 
@@ -55,8 +56,19 @@ function getRandomImage(){
   // padding code from w3schools" http://webdevable.com/w3schools/jsref/prop_style_padding.html
   imageElement.setAttribute('alt', chosenImage.alt);
   imageElement.setAttribute('title', chosenImage.title);
+  
+  var radioButton = document.createElement('input');
+  radioButton.setAttribute('type', 'radio');
+  radioButton.setAttribute('value', chosenImage);
+  parentElement.appendChild(radioButton);
   parentElement.appendChild(imageElement);
+  console.log(chosenImage.alt);
+  
+  
 }
+
+
+
 
 function getRandomNumber(max) {
   return Math.floor(Math.random() * Math.floor(max));
@@ -96,3 +108,23 @@ parentElement.addEventListener('click', handleClick);
 getRandomImage();
 getRandomImage();
 getRandomImage();
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+            label: 'My First dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45]
+        }]
+    },
+
+    // Configuration options go here
+    options: {}
+});
