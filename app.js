@@ -1,130 +1,177 @@
-'use strict';
-
-// Global Variables
-var parentElement = document.getElementById('products');
-var finalList = document.getElementById('ul');
-var productArray = [];
-var totalClicks = 0;
-var maxClicks = 25;
-var uniqueArray = [];
-
-
-
-
-function Product (name){
-  this.title = `${name}`.slice(0,-4);
-  // slice function from StackOverflow: https://stackoverflow.com/questions/952924/javascript-chop-slice-trim-off-last-character-in-string
-  this.title = this.title.charAt(0).toUpperCase() + this.title.slice(1);
-  // capitaliation code from: https://paulund.co.uk/how-to-capitalize-the-first-letter-of-a-string-in-javascript
-  this.alt = `${name}`;
-  this.filepath = `../img/${name}`;
-  this.clicks = 0;
-  this.shown = 0;
-  productArray.push(this);
+'use strict'
+var parentElement = document.getElementById('here');
+var parentList = document.getElementById('list')
+var itemArray = [];
+var uniqueImageArray = [];
+var maxClick = 25;
+var totalArray = [];
+function Item(filepath, alt, title) {
+  this.filepath = filepath;
+  this.alt = alt;
+  this.title = title;
+  this.clickCount = 0;
+  this.itemShown = 0;
+  itemArray.push(this);
 }
+function checkLocalStorage() {
+  if (localStorage.getItem('items') === null) {
+    createItems();
+  } else {
+    var getItemArray = localStorage.getItem('items');
+    var parseItem = JSON.parse(getItemArray);
+    itemArray = parseItem;
+  }
+}
+checkLocalStorage();
 
-new Product('bag.jpg');
-new Product('banana.jpg');
-new Product('bathroom.jpg');
-new Product('boots.jpg');
-new Product('breakfast.jpg');
-new Product('bubblegum.jpg');
-new Product('chair.jpg');
-new Product('cthulhu.jpg');
-new Product('dog-duck.jpg');
-new Product('dragon.jpg');
-new Product('pen.jpg');
-new Product('pet-sweep.jpg');
-new Product('scissors.jpg');
-new Product('shark.jpg');
-new Product('sweep.png');
-new Product('tauntaun.jpg');
-new Product('unicorn.jpg');
-new Product('usb.gif');
-new Product('water-can.jpg');
-new Product('wine-glass.jpg');
-
-
-function getRandomImage(){
-  var randomIndex = getRandomNumber(productArray.length);
-  var chosenImage = productArray[randomIndex];
-  chosenImage.shown++;
+function createItems() {
+  var bag = new Item('../IMG/bag.jpg', 'bag', 'bag');
+  var banana = new Item('../IMG/banana.jpg', 'banana', 'banana');
+  var bathroom = new Item('../IMG/bathroom.jpg', 'bathroom', 'bathroom');
+  var boots = new Item('../IMG/boots.jpg', 'boots', 'boots');
+  var breakfast = new Item('../IMG/breakfast.jpg', 'breakfast', 'breakfast');
+  var bubblegum = new Item('../IMG/bubblegum.jpg', 'bubblegum', 'bubblegum');
+  var chair = new Item('../IMG/chair.jpg', 'chair', 'chair');
+  var cthulhu = new Item('../IMG/cthulhu.jpg', 'cthulhu', 'cthulhu');
+  var dogDuck = new Item('../IMG/dog-duck.jpg', 'dog duck', 'dog duck');
+  var dragon = new Item('../IMG/dragon.jpg', 'dragon', 'dragon');
+  var pen = new Item('../IMG/pen.jpg', 'pen', 'pen');
+  var sweep = new Item('../IMG/pet-sweep.jpg', 'pet sweep', 'pet sweep');
+  var scissors = new Item('../IMG/scissors.jpg', 'scissors', 'scissors');
+  var shark = new Item('../IMG/shark.jpg', 'shark', 'shark');
+  var sweep = new Item('../IMG/sweep.png', 'sweep', 'sweep');
+  var tauntaun = new Item('../IMG/tauntaun.jpg', 'tauntaun', 'tauntaun');
+  var unicorn = new Item('../IMG/unicorn.jpg', 'unicorn', 'unicorn');
+  var usb = new Item('../IMG/usb.gif', 'usb', 'usb');
+  var waterCan = new Item('../IMG/water-can.jpg', 'water-can', 'water-can');
+  var wineGlass = new Item('../IMG/wine-glass.jpg', 'wine glass', 'wine glass')
+}
+function random() {
+  var randomImage = randomNumber(itemArray.length);
+  while (uniqueImageArray.includes(randomImage)) {
+    randomImage = randomNumber(itemArray.length);
+  }
+  uniqueImageArray.push(randomImage);
+  if (uniqueImageArray.length > 6) {
+    uniqueImageArray.shift();
+  }
+  var chooseImage = itemArray[randomImage];
+  chooseImage.itemShown++;
   var imageElement = document.createElement('img');
-  imageElement.setAttribute('src', chosenImage.filepath);
-  imageElement.width = 400;
-  imageElement.style.padding = '10px';
-  // padding code from w3schools" http://webdevable.com/w3schools/jsref/prop_style_padding.html
-  imageElement.setAttribute('alt', chosenImage.alt);
-  imageElement.setAttribute('title', chosenImage.title);
-  
-  var radioButton = document.createElement('input');
-  radioButton.setAttribute('type', 'radio');
-  radioButton.setAttribute('value', chosenImage);
-  parentElement.appendChild(radioButton);
+  imageElement.setAttribute('src', chooseImage.filepath);
+  imageElement.setAttribute('alt', chooseImage.alt);
+  imageElement.setAttribute('title', chooseImage.title);
   parentElement.appendChild(imageElement);
-  console.log(chosenImage.alt);
-  
-  
 }
-
-
-
-
-function getRandomNumber(max) {
+function randomNumber(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
-
-function handleClick(event){
-  parentElement.onclick= totalClicks++;
-  console.log('The total clicks were: '+ totalClicks);
+function onClick(event) {
   var alt = event.target.alt;
-
-  for(var i=0; i<productArray.length; i++){
-    if(alt === productArray[i].alt){
-      productArray[i].clicks++;
-      productArray[i].shown++;
+  maxClick--;
+  if (maxClick !== 0) {
+    for (var i = 0; i < itemArray.length; i++) {
+      if (alt === itemArray[i].alt) {
+        itemArray[i].clickCount++;
+      }
     }
+    parentElement.innerHTML = '';
+    random();
+    random();
+    random();
   }
-
-  parentElement.innerHTML = '';
-  getRandomImage();
-  getRandomImage();
-  getRandomImage();
-  if (totalClicks>=maxClicks) {
-    parentElement.removeEventListener('click', handleClick);
-    for (var j = 0; j < productArray.length; j++){
+  else {
+    var jsonItemArray = JSON.stringify(itemArray);
+    localStorage.setItem('items', jsonItemArray);
+    parentElement.innerHTML = '';
+    for (var i = 0; i < itemArray.length; i++) {
+      totalArray.push(itemArray[i].clickCount);
       var li = document.createElement('li');
-      li.textContent = productArray[j].title + ' had ' + productArray[j].clicks + ' votes and was shown ' + productArray[j].shown + ' times.';
-      finalList.appendChild(li);
+      li.textContent = itemArray[i].alt + ' had ' + itemArray[i].clickCount + ' vote(s) and was shown ' + itemArray[i].itemShown + ' time(s).'
+      parentList.appendChild(li);
     }
+    var getItemArray = localStorage.getItem('item');
+    var parseItem = JSON.parse(getItemArray);
+    console.log(parseItem);
+    chart();
   }
 }
+parentElement.addEventListener('click', onClick);
+random();
+random();
+random();
 
-
-parentElement.addEventListener('click', handleClick);
-
-
-
-getRandomImage();
-getRandomImage();
-getRandomImage();
-
-var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
-
-    // The data for our dataset
+// function buildRadioButton(){
+// var radio = document.createElement('input');
+// radio.setAttribute('type', 'radio');
+// radio.setAttribute('value', chooseImage.alt);
+// parentElement.appendChild(radio);
+// }
+function chart() {
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
     data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45]
-        }]
+      labels: ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can'],
+      datasets: [{
+        label: '# of Votes',
+        data: totalArray,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
     },
-
-    // Configuration options go here
-    options: {}
-});
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+}

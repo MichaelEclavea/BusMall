@@ -7,28 +7,34 @@ var parentElement3 = document.getElementById('product3');
 // var finalList = document.getElementById('ul');
 var path = "../img/";
 var productArray = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
-
 var totalClicks = 0;
 var maxClicks = 25;
 var uniqueArray = [];
-
+var views = 0; 
 
 
 
 function getRandomImage() {
-    var pickedImages = [];
+    var uniqueArray = [];
     var numbers = [];
     while (numbers.length === 0) {
         var num1 = Math.floor(Math.random() * productArray.length);
         var num2 = Math.floor(Math.random() * productArray.length);
         var num3 = Math.floor(Math.random() * productArray.length);
         if (num1 !== num2 && num1 !== num3 && num2 !== num3) {
-            numbers.push(num1, num2, num3)
-            console.log(numbers);
+            numbers.push(num1, num2, num3);      
+            uniqueArray.push(num1,num2,num3); 
             break;
-        }
-    }
-    var image1 = path + productArray[num1];
+        } 
+       productArray[num1].views++;
+       productArray[num2].views++;
+       productArray[num3].views++;
+    // } while (uniqueArray > 6) {
+    // uniqueArray.shift(); uniqueArray.shift(); uniqueArray.shift();
+    // console.log(uniqueArray);
+}
+
+    var image1 = path + productArray[num1];   
     var image2 = path + productArray[num2];
     var image3 = path + productArray[num3];
 
@@ -73,7 +79,15 @@ function getRandomImage() {
             }
             temp.appendChild(input);
         } 
-    }
+        function handleClick(){
+            document.getElementById(productArray).addEventListener('click', function(){
+             this.target.
+            });
+            }
+        }
+    }  
     inputButtons();
+
 }
 getRandomImage();
+

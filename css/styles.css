@@ -1,3 +1,29 @@
 body {
     background-color: lightblue; 
+    text-align: center;
+}
+
+h1{
+    font-size: 3rem;
+    font-weight: 400px;
+    text-decoration: underline;
+    padding-bottom: 50px;
+}
+
+h3{
+    padding-top: 20px; 
+    font-size: 2rem;
+}
+
+img{
+    width: 300px;
+    height: 300px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+main section {
+    display: inline;
+    max-width: 100%;
+    
 }
