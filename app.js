@@ -1,7 +1,7 @@
 'use strict'
 var parentElement = document.getElementById('here');
 var parentList = document.getElementById('list')
-var itemArray = [];
+var Array = [];
 var uniqueImageArray = [];
 var maxClick = 25;
 var totalArray = [];
@@ -11,15 +11,15 @@ function Item(filepath, alt, title) {
   this.title = title;
   this.clickCount = 0;
   this.itemShown = 0;
-  itemArray.push(this);
+  Array.push(this);
 }
 function checkLocalStorage() {
   if (localStorage.getItem('items') === null) {
     createItems();
   } else {
-    var getItemArray = localStorage.getItem('items');
-    var parseItem = JSON.parse(getItemArray);
-    itemArray = parseItem;
+    var getArray = localStorage.getItem('items');
+    var parseItem = JSON.parse(getArray);
+    Array = parseItem;
   }
 }
 checkLocalStorage();
@@ -47,15 +47,15 @@ function createItems() {
   var wineGlass = new Item('../IMG/wine-glass.jpg', 'wine glass', 'wine glass')
 }
 function random() {
-  var randomImage = randomNumber(itemArray.length);
+  var randomImage = randomNumber(Array.length);
   while (uniqueImageArray.includes(randomImage)) {
-    randomImage = randomNumber(itemArray.length);
+    randomImage = randomNumber(Array.length);
   }
   uniqueImageArray.push(randomImage);
   if (uniqueImageArray.length > 6) {
     uniqueImageArray.shift();
   }
-  var chooseImage = itemArray[randomImage];
+  var chooseImage = Array[randomImage];
   chooseImage.itemShown++;
   var imageElement = document.createElement('img');
   imageElement.setAttribute('src', chooseImage.filepath);
@@ -70,9 +70,9 @@ function onClick(event) {
   var alt = event.target.alt;
   maxClick--;
   if (maxClick !== 0) {
-    for (var i = 0; i < itemArray.length; i++) {
-      if (alt === itemArray[i].alt) {
-        itemArray[i].clickCount++;
+    for (var i = 0; i < Array.length; i++) {
+      if (alt === Array[i].alt) {
+        Array[i].clickCount++;
       }
     }
     parentElement.innerHTML = '';
@@ -81,19 +81,20 @@ function onClick(event) {
     random();
   }
   else {
-    var jsonItemArray = JSON.stringify(itemArray);
-    localStorage.setItem('items', jsonItemArray);
-    parentElement.innerHTML = '';
-    for (var i = 0; i < itemArray.length; i++) {
-      totalArray.push(itemArray[i].clickCount);
-      var li = document.createElement('li');
-      li.textContent = itemArray[i].alt + ' had ' + itemArray[i].clickCount + ' vote(s) and was shown ' + itemArray[i].itemShown + ' time(s).'
-      parentList.appendChild(li);
+    if (jsonArray !== 0){
+      var getArray = localStorage.getItem('item');
+      var parseItem = JSON.parse(getArray);
+      parseItem + Array;
     }
-    var getItemArray = localStorage.getItem('item');
-    var parseItem = JSON.parse(getItemArray);
-    console.log(parseItem);
-    chart();
+    var jsonArray = JSON.stringify(Array);
+    localStorage.setItems('items', jsonArray);
+    parentElement.innerHTML = '';
+    for (var i = 0; i < Array.length; i++){
+      var li = document.createElement('li');
+      li.textContent = Array[i].alt + ' had ' + Array[i].clickCount + ' vote(s) and was shown ' + Array[i].itemShown + ' time(s).';
+      parentList.appenChild(li);
+      chart();    
+    }
   }
 }
 parentElement.addEventListener('click', onClick);
@@ -101,12 +102,7 @@ random();
 random();
 random();
 
-// function buildRadioButton(){
-// var radio = document.createElement('input');
-// radio.setAttribute('type', 'radio');
-// radio.setAttribute('value', chooseImage.alt);
-// parentElement.appendChild(radio);
-// }
+
 function chart() {
   var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {

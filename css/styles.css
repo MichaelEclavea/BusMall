@@ -27,3 +27,13 @@ main section {
     max-width: 100%;
     
 }
+
+ul{
+    text-align: left;
+    padding-left: 10px;
+    
+}
+
+li {
+    border-style: 2px solid black;
+}
