@@ -1,11 +1,13 @@
 'use strict'
-
+//list creater
 var parentElement = document.getElementById('here');
 var parentList = document.getElementById('list')
 var itemArray = [];
 var uniqueImageArray = [];
 var maxClick = 25;
 
+
+//constructor function
 function Item(filepath, alt, title) {
   this.filepath = filepath;
   this.alt = alt;
@@ -14,6 +16,8 @@ function Item(filepath, alt, title) {
   this.itemShown = 0;
   itemArray.push(this);
 }
+
+//function declerations
 
 var bag = new Item('../IMG/bag.jpg', 'bag', 'bag');
 var banana = new Item('../IMG/banana.jpg', 'banana', 'banana');
@@ -58,9 +62,8 @@ function randomNumber(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+//click event 
 function onClick(event) {
-
-  
   var alt = event.target.alt;
   maxClick--;
   if (maxClick !== 0) {
@@ -73,7 +76,7 @@ function onClick(event) {
     random();
     random();
     random();
-  }
+  } //JSON parsing
   else {
     if (jsonItemArray !== 0) {
       var getItemArray = localStorage.getItem('item');
@@ -99,12 +102,7 @@ random();
 random();
 
 
-// function buildRadioButton(){
-// var radio = document.createElement('input');
-// radio.setAttribute('type', 'radio');
-// radio.setAttribute('value', chooseImage.alt);
-// parentElement.appendChild(radio);
-// }
+// chart.js
 
 function chart() {
   var noH3 = document.getElementById('h3');
