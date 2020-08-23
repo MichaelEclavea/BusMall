@@ -4,10 +4,11 @@ body {
 }
 
 h1{
-    font-size: 3rem;
+    font-size: 4rem;
     font-weight: 400px;
     text-decoration: underline;
     padding-bottom: 50px;
+    padding-top: 50px;
 }
 
 h3{
@@ -20,6 +21,10 @@ img{
     height: 300px;
     padding-left: 5px;
     padding-right: 5px;
+    border: 2px solid black;
+    
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 main section {
@@ -34,6 +39,17 @@ ul{
     
 }
 
-li {
-    border-style: 2px solid black;
+
+
+#list{
+   
+   width: 400px;
+   margin-left: 30%;
+   text-align: left;
+}
+
+#list li {
+    text-align: left; 
+    line-height: 30px;
+    text-decoration-line: underline;
 }
